@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analysis Result | ResumePilot AI</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f8fafc;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .result-box {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.06);
+            text-align: left;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Your Resume Analysis</h1>
+
+<div class="result-box">
+
+    <div class="score">
+        ATS Score: {{ analysis.ats_score }}/100
+    </div>
+
+    <h3>Improvement Suggestions</h3>
+    <ul>
+        {% for item in analysis.improvements %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Overall Feedback</h3>
+    <p>{{ analysis.feedback }}</p>
+
+</div>
+
+<a href="{% url 'home' %}" class="back-btn">Analyze Another Resume</a>
+
+</body>
+</html>

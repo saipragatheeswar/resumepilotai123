@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Free ATS Resume Checker & AI Resume Analyzer | ResumePilot AI</title>
+    <meta name="description" content="Upload your resume and get instant ATS score, keyword analysis and AI-powered feedback. Improve your resume and get hired faster.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* FEATURES SECTION */
+        .features-section {
+            padding: 80px 8%;
+            background: #f9fafb;
+            text-align: center;
+        }
+
+        .features-header h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        .features-header p {
+            color: #6b7280;
+            margin-bottom: 50px;
+        }
+
+        .features-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            width: 300px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* ICON */
+        .feature-card .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        /* TITLE */
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #2563eb;
+        }
+
+        /* DESCRIPTION */
+        .feature-card p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* HOVER ZOOM EFFECT */
+        .feature-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        /* HEADER */
+        header {
+            background: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 50px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 35px;
+        }
+
+        /* UPLOAD BOX */
+        .upload-box {
+            background: white;
+            max-width: 520px;
+            margin: auto;
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.06);
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #1e40af;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 60px 8%;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            font-size: 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+
+        .interview-box {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .interview-box h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .interview-box p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .section-divider {
+            height: 60px;
+        }
+
+        .hero h2 {
+            margin-top: 10px;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .hero p {
+            margin-bottom: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav {
+                margin-top: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">ResumePilot AI</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">How It Works</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<!-- FEATURES SECTION -->
+<section class="features-section">
+
+    <div class="features-header">
+        <h2>What ResumePilot AI Can Do For You</h2>
+        <p>Powerful AI tools to boost your resume and increase your hiring chances.</p>
+    </div>
+
+    <div class="features-container">
+
+        <!-- Feature 1 -->
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>ATS Score Analysis</h3>
+            <p>
+                Get instant ATS compatibility score and see how well
+                your resume performs in applicant tracking systems.
+            </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+            <div class="icon">✍️</div>
+            <h3>Resume Improvement</h3>
+            <p>
+                AI-powered suggestions to improve formatting,
+                keywords, and job-role alignment.
+            </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+            <div class="icon">🎯</div>
+            <h3>Interview Questions</h3>
+            <p>
+                Generate personalized technical and HR interview
+                questions tailored to your resume.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+<!-- HERO SECTION -->
+<section class="hero">
+
+    <!-- Resume Analyzer -->
+    <h1>Free ATS Resume Checker & AI Resume Analyzer</h1>
+    <p>
+        Upload your resume to receive an AI-powered ATS score, detailed feedback,
+        and personalized improvement suggestions.
+    </p>
+
+    <div class="upload-box">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="resume" accept=".pdf" required>
+            <button type="submit" class="btn">
+                Analyze My Resume
+            </button>
+        </form>
+    </div>
+
+    <!-- Divider Space -->
+    <div class="section-divider"></div>
+
+    <!-- Interview Practice -->
+    <h1>AI Interview Question Generator</h1>
+    <p>
+        Practice with role-based and skill-based interview questions generated
+        instantly by AI to boost your confidence.
+    </p>
+
+    <div class="upload-box interview-box">
+        <a href="{% url 'interview' %}" class="btn">
+            Start Interview Practice
+        </a>
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-container">
+
+        <div class="footer-section">
+            <h3>ResumePilot AI</h3>
+            <p>
+                ResumePilot AI is a free ATS resume checker and AI-powered resume analysis platform
+                designed to help job seekers improve their resumes and get hired faster.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <p><a href="#">Home</a></p>
+            <p><a href="#">How It Works</a></p>
+            <p><a href="#">Blog</a></p>
+            <p><a href="#">Contact</a></p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>📍 Kanyakumari, Tamil Nadu, India</p>
+            <p>📧 sai8121999war@gmail.com</p>
+            <p>📞 +91 6381264356</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Legal</h3>
+            <p><a href="#">Privacy Policy</a></p>
+            <p><a href="#">Terms & Conditions</a></p>
+            <p><a href="#">Disclaimer</a></p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 ResumePilot AI. All rights reserved.
+    </div>
+</footer>
+
+</body>
+</html>

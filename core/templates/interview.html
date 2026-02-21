@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Prep | AI Career Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Branding */
+        .navbar {
+            background: #111827;
+            padding: 15px 40px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .navbar span {
+            color: #6366f1;
+        }
+
+        /* Center Layout */
+        .chat-page {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-wrapper {
+            width: 100%;
+            max-width: 800px; /* Controls width */
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .chat-header p {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fafafa;
+        }
+
+        .message {
+            display: flex;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .user .bubble {
+            background: #6366f1;
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .bot .bubble {
+            background: #e5e7eb;
+            color: #111827;
+            border-bottom-left-radius: 6px;
+        }
+
+        .typing {
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            background: white;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 25px;
+            border: 1px solid #d1d5db;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-area button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            background: #6366f1;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .chat-input-area button:hover {
+            background: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        ResumePilot AI - <span>Interview Preparation</span>
+    </div>
+
+    <div class="chat-page">
+        <div class="chat-wrapper">
+
+            <div class="chat-header">
+                <h2>Interview Preparation Chatbot</h2>
+                <p>Ask for technical, HR, or role-based interview questions.</p>
+            </div>
+
+            <div class="chat-container" id="chat-container">
+                {% for message in messages %}
+                    <div class="message {{ message.role }}">
+                        <div class="bubble">
+                            {{ message.content|linebreaks }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <form id="chat-form" class="chat-input-area">
+                {% csrf_token %}
+                <input type="text" id="user-input" name="question"
+                       placeholder="Type your question..." required>
+                <button type="submit">Send</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const form = document.getElementById("chat-form");
+        const inputField = document.getElementById("user-input");
+        const chatContainer = document.getElementById("chat-container");
+
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            let message = inputField.value.trim();
+            if (!message) return;
+
+            // Show user message instantly
+            let userDiv = document.createElement("div");
+            userDiv.className = "message user";
+            userDiv.innerHTML = `<div class="bubble">${message}</div>`;
+            chatContainer.appendChild(userDiv);
+
+            inputField.value = "";
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Show typing indicator
+            let typingDiv = document.createElement("div");
+            typingDiv.className = "message bot typing";
+            typingDiv.innerHTML = `<div class="bubble">AI is typing...</div>`;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Send AJAX request
+            fetch("{% url 'interview' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: "question=" + encodeURIComponent(message)
+            })
+            .then(response => response.json())
+            .then(data => {
+                typingDiv.remove();
+
+                let botDiv = document.createElement("div");
+                botDiv.className = "message bot";
+                botDiv.innerHTML = `<div class="bubble">${data.reply.replace(/\n/g, "<br>")}</div>`;
+                chatContainer.appendChild(botDiv);
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            })
+            .catch(error => {
+                typingDiv.remove();
+                console.error("Error:", error);
+            });
+        });
+    </script>
+
+</body>
+</html>
