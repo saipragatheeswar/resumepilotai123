@@ -5,9 +5,11 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from PyPDF2 import PdfReader
 from groq import Groq
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
 # === Groq client ===
-client = Groq(api_key="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")
+client = Groq(api_key=os.getenv("GROQ"))
 
 
 # === PDF Extraction ===
